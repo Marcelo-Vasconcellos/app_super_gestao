@@ -1,0 +1,116 @@
+Pedido.php:        //return $this->belongsToMany('App\Produto', 'pedidos_produtos');
+Pedido.php:        return $this->belongsToMany('App\Item', 'pedidos_produtos', 'pedido_id', 'produto_id')->withPivot('id', 'created_at', 'updated_at');
+Pedido.php:            1 - Modelo do relacionamento NxN em relação o Modelo que estamos implementando
+Pedido.php:            2 - É a tabela auxiliar que armazena os registros de relacionamento
+Pedido.php:            3 - Representa o nome da FK da tabela mapeada pelo modelo na tabela de relacionamento
+Pedido.php:            4 - Representa o nome da FK da tabela mapelada pelo model utilizado no relacionamento que estamos implementando
+Http/Controllers/TesteController.php:        return view('site.teste')->with('xyz', $p1)->with('zzz', $p2); //with()
+Http/Controllers/PedidoProdutoController.php:        //$pedido->produtos; //eager loading
+Http/Controllers/PedidoProdutoController.php:        $request->validate($regras, $feedback);
+Http/Controllers/PedidoProdutoController.php:        $pedidoProduto->pedido_id = $pedido->id;
+Http/Controllers/PedidoProdutoController.php:        $pedidoProduto->produto_id = $request->get('produto_id');
+Http/Controllers/PedidoProdutoController.php:        $pedidoProduto->quantidade = $request->get('quantidade');
+Http/Controllers/PedidoProdutoController.php:        $pedidoProduto->save();
+Http/Controllers/PedidoProdutoController.php:        //$pedido->produtos //os registros do relacionamento
+Http/Controllers/PedidoProdutoController.php:        $pedido->produtos()->attach(
+Http/Controllers/PedidoProdutoController.php:            $request->get('produto_id'),
+Http/Controllers/PedidoProdutoController.php:                'quantidade' => $request->get('quantidade'),
+Http/Controllers/PedidoProdutoController.php:        $pedido->produtos()->attach([
+Http/Controllers/PedidoProdutoController.php:            $request->get('produto_id') => ['quantidade' => $request->get('quantidade')]
+Http/Controllers/PedidoProdutoController.php:        return redirect()->route('pedido-produto.create', ['pedido' => $pedido->id]);
+Http/Controllers/PedidoProdutoController.php:        print_r($pedido->getAttributes());
+Http/Controllers/PedidoProdutoController.php:        print_r($produto->getAttributes());
+Http/Controllers/PedidoProdutoController.php:        //echo $pedido->id.' - '.$produto->id;
+Http/Controllers/PedidoProdutoController.php:            'pedido_id' => $pedido->id,
+Http/Controllers/PedidoProdutoController.php:            'produto_id' => $produto->id
+Http/Controllers/PedidoProdutoController.php:        ])->delete();
+Http/Controllers/PedidoProdutoController.php:        //$pedido->produtos()->detach($produto->id);
+Http/Controllers/PedidoProdutoController.php:        $pedidoProduto->delete();
+Http/Controllers/PedidoProdutoController.php:        return redirect()->route('pedido-produto.create', ['pedido' => $pedido_id]);
+Http/Controllers/ClienteController.php:        return view('app.cliente.index', ['clientes' => $clientes, 'request' => $request->all()]);
+Http/Controllers/ClienteController.php:        $request->validate($regras, $feedback);
+Http/Controllers/ClienteController.php:        $cliente->nome = $request->get('nome');
+Http/Controllers/ClienteController.php:        $cliente->save();
+Http/Controllers/ClienteController.php:        return redirect()->route('cliente.index');
+Http/Controllers/ProdutoDetalheController.php:        ProdutoDetalhe::create($request->all());
+Http/Controllers/ProdutoDetalheController.php:        $produtoDetalhe->update($request->all());
+Http/Controllers/ContatoController.php:        $request->validate(
+Http/Controllers/ContatoController.php:        SiteContato::create($request->all());
+Http/Controllers/ContatoController.php:        return redirect()->route('site.index');  // está sendo utilizado o ALIAS da ROUTE.WEB 'site.index'
+Http/Controllers/PedidoController.php:        return view('app.pedido.index', ['pedidos' => $pedidos, 'request' => $request->all()] );
+Http/Controllers/PedidoController.php:        $request->validate($regras, $feedback);
+Http/Controllers/PedidoController.php:        $pedido->cliente_id = $request->get('cliente_id');
+Http/Controllers/PedidoController.php:        $pedido->save();
+Http/Controllers/PedidoController.php:        return redirect()->route('pedido.index');
+Http/Controllers/FornecedorController.php:        $fornecedores = Fornecedor::with(['produtos'])->where('nome', 'like', '%'.$request->input('nome').'%')
+Http/Controllers/FornecedorController.php:        ->where('site', 'like', '%'.$request->input('site').'%')
+Http/Controllers/FornecedorController.php:        ->where('uf', 'like', '%'.$request->input('uf').'%')
+Http/Controllers/FornecedorController.php:        ->where('email', 'like', '%'.$request->input('email').'%')
+Http/Controllers/FornecedorController.php:        ->paginate(6);
+Http/Controllers/FornecedorController.php:        return view('app.fornecedor.listar', ['fornecedores' => $fornecedores, 'request' => $request->all()] );
+Http/Controllers/FornecedorController.php:        if($request->input('_token') != '' && $request->input('id') == '') {
+Http/Controllers/FornecedorController.php:                'email.email' => 'O campo e-mail não foi preenchido corretamente'
+Http/Controllers/FornecedorController.php:            $request->validate($regras, $feedback);
+Http/Controllers/FornecedorController.php:            $fornecedor->create($request->all());
+Http/Controllers/FornecedorController.php:        if($request->input('_token') != '' && $request->input('id') != '') {
+Http/Controllers/FornecedorController.php:            $fornecedor = Fornecedor::find($request->input('id'));
+Http/Controllers/FornecedorController.php:            $update = $fornecedor->update($request->all());
+Http/Controllers/FornecedorController.php:            return redirect()->route('app.fornecedor.editar', ['id' => $request->input('id'), 'msg' => $msg]);
+Http/Controllers/FornecedorController.php:        $fornecedor = Fornecedor::find($id)->delete();
+Http/Controllers/FornecedorController.php:        return redirect()->route('app.fornecedor.listar');
+Http/Controllers/ProdutoController.php:        $produtos = Item::with(['itemDetalhe', 'fornecedor'])->paginate(10);
+Http/Controllers/ProdutoController.php:        return view('app.produto.index', ['produtos' => $produtos, 'request' => $request->all() ]);
+Http/Controllers/ProdutoController.php:        $request->validate($regras, $feedback);
+Http/Controllers/ProdutoController.php:        Item::create($request->all());
+Http/Controllers/ProdutoController.php:        return redirect()->route('produto.index');
+Http/Controllers/ProdutoController.php:        $request->validate($regras, $feedback);
+Http/Controllers/ProdutoController.php:        //dd($request->all());
+Http/Controllers/ProdutoController.php:        $produto->update($request->all());
+Http/Controllers/ProdutoController.php:        return redirect()->route('produto.show', ['produto' => $produto->id ]);
+Http/Controllers/ProdutoController.php:        $produto->delete();
+Http/Controllers/ProdutoController.php:        return redirect()->route('produto.index');
+Http/Controllers/SobreNosController.php:        $this->middleware(LogAcessoMiddleware::class);
+Http/Controllers/SobreNosController.php:        return view('site.sobre-nos');
+Http/Controllers/LoginController.php:        if($request->get('erro')==1){
+Http/Controllers/LoginController.php:        if($request->get('erro')==2){
+Http/Controllers/LoginController.php:            'usuario.email' => 'O campo usuário (e-mail) é obrigatório',
+Http/Controllers/LoginController.php:        $request->validate($regras, $feedback);
+Http/Controllers/LoginController.php:        $email = $request->get('usuario');
+Http/Controllers/LoginController.php:        $password = $request->get('senha');
+Http/Controllers/LoginController.php:        $existe = $user->where('email',$email)->where('password',$password)
+Http/Controllers/LoginController.php:                        ->get()
+Http/Controllers/LoginController.php:                        ->first();
+Http/Controllers/LoginController.php:        if(isset($existe->name)){
+Http/Controllers/LoginController.php:            $_SESSION['nome'] = $existe->name;
+Http/Controllers/LoginController.php:            $_SESSION['email'] = $existe->email;
+Http/Controllers/LoginController.php:            return redirect()->route('app.home');
+Http/Controllers/LoginController.php:            return redirect()->route('site.login',['erro' => 1]);
+Http/Controllers/LoginController.php:        return redirect()->route('site.index');
+Http/Middleware/TrustHosts.php:            $this->allSubdomainsOfApplicationUrl(),
+Http/Middleware/AutenticacaoMiddleware.php:           return redirect()->route('site.login',['erro'=>2]);
+Http/Middleware/Authenticate.php:        if (! $request->expectsJson()) {
+Http/Middleware/LogAcessoMiddleware.php:        $ip = $request->server->get('REMOTE_ADDR');
+Http/Middleware/LogAcessoMiddleware.php:        $route = $request->getRequestUri();
+Http/Middleware/RedirectIfAuthenticated.php:        if (Auth::guard($guard)->check()) {
+Console/Kernel.php:        // $schedule->command('inspire')->hourly();
+Console/Kernel.php:        $this->load(__DIR__.'/Commands');
+ItemDetalhe.php:        return $this->belongsTo('App\Item', 'produto_id', 'id');
+Providers/AuthServiceProvider.php:        $this->registerPolicies();
+Providers/RouteServiceProvider.php:        $this->mapApiRoutes();
+Providers/RouteServiceProvider.php:        $this->mapWebRoutes();
+Providers/RouteServiceProvider.php:            ->namespace($this->namespace)
+Providers/RouteServiceProvider.php:            ->group(base_path('routes/web.php'));
+Providers/RouteServiceProvider.php:            ->middleware('api')
+Providers/RouteServiceProvider.php:            ->namespace($this->namespace)
+Providers/RouteServiceProvider.php:            ->group(base_path('routes/api.php'));
+Produto.php:        return $this->hasOne('App\ProdutoDetalhe');
+Produto.php:        //1 registro relacionado em produto_detalhes (fk) -> produto_id
+Produto.php:        //produtos (pk) -> id
+ProdutoDetalhe.php:        return $this->belongsTo('App\Produto');
+Item.php:        return $this->hasOne('App\ItemDetalhe', 'produto_id', 'id');
+Item.php:        return $this->belongsTo('App\Fornecedor');
+Item.php:        return $this->belongsToMany('App\Pedido', 'pedidos_produtos', 'produto_id', 'pedido_id');
+Item.php:            3 - Representa o nome da FK da tabela mapeada pelo model na tabela de relacionamento
+Item.php:            4 - Representa o nome da FK da tabela mapeada pelo model utilizado no relacionamento que estamos implementando
+Fornecedor.php:        return $this->hasMany('App\Item', 'fornecedor_id', 'id');
+Fornecedor.php:        //return $this->hasMany('App\Item');
